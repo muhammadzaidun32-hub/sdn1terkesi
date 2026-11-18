@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PPDB — SDN 1 Terkesi</title>
+  <meta name="description" content="Pendaftaran peserta didik baru SDN 1 Terkesi: jadwal, persyaratan, dan formulir pendaftaran online." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,7;0,800;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏫</text></svg>" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <span class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18" /><path d="M5 21V7l7-4 7 4v14" /><path d="M9 21v-6h6v6" /><path d="M12 3v4" />
+          </svg>
+        </span>
+        <span>
+          <span class="brand-name">SDN 1 TERKESI</span><br />
+          <span class="brand-tag">Kec. Kramat · Kab. Tegal</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Menu utama">
+        <a href="index.html">Beranda</a>
+        <a href="profil.html">Profil</a>
+        <a href="akademik.html">Akademik</a>
+        <a href="ppdb.html" class="active">PPDB</a>
+        <a href="berita.html">Berita</a>
+        <h14>...</h14>
+        <a href="kontak.html">Kontak</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="ppdb.html" class="btn btn-gold">🎓 Daftar PPDB</a>
+        <button class="nav-toggle" aria-label="Buka menu">☰</button>
+      </div>
+    </div"><br>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumb"><a href="index.html">Beranda</a> / <span>Penerimaan Peserta Didik Baru</span></p>
+      <h1 class="page-title">PPDB 2026/2027</h1>
+      <p style="color:#dbe7ff; margin-top:8px; max-width:640px;">
+        Gabung bersama keluarga besar SDN 1 Terkesi. Pendaftaran gratis,
+        mudah, dan terbuka untuk semua anak usia SD.
+      </p>
+    </div>
+  </section>
+
+  <!-- JADWAL & PERSYARATAN -->
+  <section class="section">
+    <div class="container">
+      <div class="kepala-grid">
+        <div>
+          <span class="section-kicker">Informasi PPDB</span>
+          <h2 style="font-size:1.9rem; font-weight:800; margin-bottom:14px;">Jadwal &amp; Persyaratan</h2>
+          <div class="tabel-wrap" style="margin-bottom:22px">
+            <table class="tabel-data">
+              <tbody>
+                <tr><th style="width:200px">Pendaftaran Dibuka</th><td>1 Mei – 31 Mei 2026</td></tr>
+                <tr><th>Waktu Layanan</th><td>08.00 – 13.00 WIB (Senin–Sabtu)</td></tr>
+                <tr><th>Tempat</th><td>Ruang Tata Usaha SDN 1 Terkesi</td</td>
+              </tbody>
+            </table>
+          </div>
+          <h3 style="font-weight:800; margin-bottom:10px;">📋 Dokumen yang Dibawa</h3>
+          <ul style="display:grid; gap:8px;">
+            <li>📄 Fotokopi Akta Kelahiran (dibawa berkas asli)</li>
+            <li>🏠 Fotokopi Kartu Keluarga (KK)</l>
+            <li>📇 Kartu SAKTI / skor e-KTP orang tua</li>
+            <li>📷 Foto berwarna 3×4 (2 lembar)</li>
+            <li>📚 SHUN/SKL atau rapor terakhir (bila ada)</li>
+            <li>🧊 Fotokopi KIP/PKH jika ada</li>
+          </sy>
+        </div>
+        <figure>
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=900&q=80" alt="Siswa SD" style="border-radius:22px; box-shadow:var(--shadow-soft)" />
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULIR -->
+  <section class="section" style="background:#fff">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-kicker">Formulir Pendaftaran</span>
+        <h2 class="section-title">Isi Data Calon Peserta Didik</h2>
+        <p class="section-sub">Tim kami akan menghubungi Anda untuk verifikasi dan informasi jadwal tes/kuisioner.</p>
+      </div>
+      <form class="ppdb-form" style="max-width:640px; margin-inline:auto;" data-demo>
+        <div class="form-group">
+          <label for="nama">Nama Lengkap Anak *</label>
+          <input type="text" id="nama" name="nama" placeholder="cth: Aisyah Putri" required />
+        </div>
+        <div class="form-group">
+          <label for="ttl">Tempat / Tanggal Lahir</label>
+          <input type="text" id="ttl" name="ttl" placeholder="cth: Terkesi, 12 Mei 2018" />
+        </div>
+        <div class="form-group">
+          <label for="jk">Jenis Kelamin</label>
+          <select id="jk" name="jk">
+            <option value="L">Laki-laki</option>
+            <option value="P">Perempuan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ortu">Nama Orang Tua / Wali</label>
+          <input type="text" id="ortu" name="ortu" placeholder="cth: Bpk. Ahmad (ayah)" />
+        </as>Select:
+        </div>
+        <div class="form-group">
+          <label for="telp">No. HP Aktif *</label>
+          <input type="tel" id="telp" name="telp" placeholder="cth: 0812-3456-7890" required />
+        </div>
+        <div class="form-group">
+          <label for="asal_tk">Asal TK / PAUD (opsional)</label>
+          <input type="text" id="asal_tk" name="asal_tk" placeholder="cth: TK Pertiwi Terkesi" />
+        </div>
+        <div class="form-group">
+          <label for="alamat">Alamat Lengkap</label>
+          <textarea id="alamat" name="alamat" rows="3" placeholder="Dusun/Dukuh, Desa, Kecamatan"></textarea>
+        </div>
+        <button type="submit" class="btn btn-solid" style="width:100%">✉️ Kirim Pendaftaran</button>
+        <p class="form-pesan" style="display:none; margin-top:16px; background:#e7f8ef; color:#146c43; border:1px solid #bbe7cc; padding:14px 18px; border-radius:12px; font-weight:600;">
+          ✅ Terima kasih! Data berhasil dikirim. Tim sekolah akan menghubungi Anda melalui WhatsApp/SMS.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <!-- PETUNJUK -->
+  <section class="section" style="background:#fff">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-kicker">Alur</span>
+        <h2 class="section-title">Cara Mendaftar</h2>
+      </div>
+      <div class="card-grid">
+        <div class="program-card">
+          <div class="program-ikon">1️⃣</div>
+          <h3>Siapkan Dokumen</h3>
+          <p>Fotokopi akta, KK, dan foto 3×4 sesuai ketentuan di atas.</p>
+        </div>
+        <div class="program-card">
+          <div class="program-ikon">2️⃣</div>
+          <h3>Isi Formulir Online</h3>
+          <p>Kirimi data melalui formulir di halaman ini ialah datang langsung ke sekolah.</p>
+        </div>
+        <div class="program-card">
+          <div form-group>
+          <div class="program-ikon">3️⃣</div>
+          <h3>Verifikasi Data</h4></h3>
+          <p>Panitia menghubungi via WhatsApp untuk konfirmasi berkas dan jadwal.</p>
+        </div>
+        <div class="program-card">
+          <div class="program-ikon">4️⃣</div>
+          <h3>Selesai!</h3>
+          <p>Terima pengumuman kelulusan &amp; jadwal orientasi siswa baru.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <span class="brand-logo">🏫</span>
+            <span><b style="color:#fff">SDN 1 TERKESI</b><br /><small style="color:#b9c9e8">NPSN 28615703</small></span>
+          </div>
+          <p>Jl. Raya Terkesi, Desa Terkesi, Kec. Kramat, Kab. Tegal, Jawa Tengah 52181.</p>
+        </div>
+        <div>
+          <h4>Tautan Cepat</h4>
+          <ul>
+            <li><a href="profil.html">Profil Sekolah</a></li>
+            <li><a href="akademik.html">Akademik</a></li>
+            <li><a href="ppdb.html">PPDB</a></li>
+            <li><a name="berita">Berita</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Navigasi</h4>
+          <ul>
+            <li><a href="kontak.html">Kontak</a></li>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="galeri.html">Galeri</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Informasi</h4>
+          <ul>
+            <li>📍 Terkesi, Kramat, Tegal</li>
+            <li>✉️ sdn1terkesi@gmail.com</li>
+            <li>🕗 Senin–Jumat 07.00–13.30</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© <b data-year>2026</b> SDN 1 Terkesi.</p>
+        <p>Kepala Sekolah: <b>Joko Susilo, S.Pd</b></p>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-top" aria-label="Kembali ke atas">↑</button>
+  <a class="credit-badge" href="#" title="Desain oleh Kang Zaed">
+    <span class="dot" aria-hidden="true"></span> Design by <b>&nbsp;Kang Zaed</b>
+  </a>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontak — SDN 1 Terkesi</title>
+  <meta name="description" content="Hubungi SDN 1 Terkesi: alamat, telepon, email, dan formulir pesan." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏫</text></svg>" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <span class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18" /><path d="M5 21V7l7-4 7 4v14" /><path d="M9 21v-6h6v6" /><path d="M12 3v4" />
+          </svg>
+        </span>
+        <span>
+          <span class="brand-name">SDN 1 TERKESI</span><br />
+          <span class="brand-tag">Kec. Kramat · Kab. Tegal</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Menu utama">
+        <a href="index.html">Beranda</a>
+        <a href="profil.html">Profil</a>
+        <a href="akademik.html">Akademik</a>
+        <a href="ppdb.html">PPDB</a>
+        <a href="berita.html">Berita</a>
+        <a href="galeri.html">Galeri</a>
+        <a href="kontak.html" class="active">Kontak</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="ppdb.html" class="btn btn-gold">🎓 Daftar PPDB</a>
+        <button class="nav-toggle" aria-label="Buka menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumb"><a href="index.html">Beranda</a> / <span>Kontak</span></p>
+      <h1 class="page-title">Hubungi Kami</h1>
+      <p style="color:#dbe7ff; margin-top:8px; max-width:640px;">
+        Kami senang mendengar dari Anda — saran, pertanyaan, atau kunjungan
+        ke sekolah silakan hubungi melalui kanal berikut.
+      </p>
+    </div>
+  </section>
+
+  <!-- KONTAK -->
+  <section class="section">
+    <div class="container">
+      <div class="kontak-grid">
+        <!-- INFO KONTAK -->
+        <div class="kontak-kartu">
+          <h3>📮 Informasi Kontak</h3>
+          <div class="info-row">
+            <span class="info-ikon">📍</span>
+            <div>
+              <b>Alamat Sekolah</b>
+              <p>Jl. Raya Terkesi, Desa Terkesi, Kec. Kramat, Kab. Tegal, Jawa Tengah 52181</p>
+            </div>
+          </div>
+          <div class="info-row">
+            <span class="info-ikon">✉️</span>
+            <div>
+              <b>Email Resmi</b>
+              <p>sdn1terkesi@gmail.com</p>
+            </div>
+          </div>
+          <div class="info-row">
+            <span class="info-ikon">📞</span>
+            <div>
+              <b>Telepon / WhatsApp</b>
+              <p>(0283) 000-000 · 0812-0000-0000</p>
+            </div>
+          </div>
+          <div class="info-row">
+            <span class="info-ikon">🕗</span>
+            <div>
+              <b>Jam Layanan</b>
+              <p>Senin–Jumat, 07.00–13.30 WIB</p>
+            </div>
+          </div>
+          <div class="info-row">
+            <span class="info-ikon">👤</span>
+            <div>
+              <b>Kepala Sekolah</b>
+              <p>Joko Susilo, S.Pd</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="kontak-kartu">
+          <h3>✉️ Kirim Pesan</h3>
+          <form data-demo>
+            <div class="form-group">
+              <label for="nama">Nama Lengkap *</label>
+              <input type="text" id="nama" name="nama" placeholder="Nama Anda" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="nama@email.com" />
+            </div>
+            <div class="form-group">
+              <label for="subjek">Subjek</label>
+              <select id="subjek" name="subjek">
+                <option>Pertanyaan umum</option>
+                <option>Pendaftaran siswa baru (PPDB)</option>
+                <option>Saran &amp; masukan</option>
+                <option>Kerja sama / CSR</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="pesan">Pesan *</label>
+              <textarea id="pesan" name="pesan" rows="4" placeholder="Tulis pesan Anda di sini..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-solid" style="width:100%">Kirim Pesan →</button>
+            <p class="form-pesan" style="display:none; margin-top:16px; background:#e7f8ef; color:#146c43; border:1px solid #bbe7cc; padding:14px 18px; border-radius:12px; font-weight:600;">
+              ✅ Terima kasih! Pesan Anda terkirim. Kami akan segera merespons.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PETA -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-kicker">Lokasi</span>
+        <h2 class="section-title">Peta Menuju Sekolah</h2>
+      </div>
+      <div style="border-radius:18px; overflow:hidden; box-shadow:var(--shadow-soft)">
+        <iframe title="Peta lokasi SDN 1 Terkesi" src="https://www.google.com/maps?q=Terkesi,Kramat,Tegal&output=embed" width="100%" height="380" style="border:0" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <span class="brand-logo">🏫</span>
+            <span><b style="color:#fff">SDN 1 TERKESI</b><br /><small style="color:#b9c9e8">NPSN 28615703 · Terakreditasi A</small></span>
+          </div>
+          <p>Jl. Raya Terkesi, Desa Terkesi, Kec. Kramat, Kab. Tegal, Jawa Tengah 52181.</p>
+        </div>
+        <div>
+          <h4>Tautan Cepat</h4>
+          <ul>
+            <li><a href="profil.html">Profil</a></li>
+            <li><a href="akademik.html">Akademik</a></li>
+            <li><a href="ppdb.html">PPDB</a></li>
+            <li><a href="berita.html">Berita</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Navigasi</h4>
+          <ul>
+            <li><a href="kontak.html">Kontak</a></li>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="galeri.html">Galeri</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Informasi</h4>
+          <ul>
+            <li>📍 Terkesi, Kramat, Tegal</li>
+            <li>✉️ sdn1terkesi@gmail.com</li>
+            <li>🕗 Senin–Jumat 07.00–13.30</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© <b data-year>2026</b> SDN 1 Terkesi — Semua hak dilindungi.</p>
+        <p>Kepala Sekolah: <b>Joko Susilo, S.Pd</b></p>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-top" aria-label="Kembali ke atas">↑</button>
+  <a class="credit-badge" href="#" title="Desain oleh Kang Zaed">
+    <span class="dot" aria-hidden="true"></span> Design by <b>&nbsp;Kang Zaed</b>
+  </a>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
