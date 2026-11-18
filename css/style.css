@@ -167,8 +167,10 @@ ul { list-style: none; }
 }
 .hero .container {
   position: relative; display: grid;
-  grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center;
+  grid-template-columns: 1fr; gap: 0; align-items: center;
+  pointer-events: none;             /* biarkan klik tembus ke panah slider */
 }
+.hero .container a, .hero .container button { pointer-events: auto; }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 9px;
   background: rgba(255, 255, 255, 0.13); border: 1px solid rgba(255, 255, 255, 0.28);
@@ -184,7 +186,7 @@ ul { list-style: none; }
   background: linear-gradient(90deg, var(--emas-400), #fde68a);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.hero-desc { margin-top: 18px; font-size: 1.06rem; color: #dbe7ff; max-width: 520px; }
+.hero-desc { margin-top: 18px; font-size: 1.06rem; color: #e6edff; max-width: 620px; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
 .hero-points { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 30px; }
 .hero-points li {
@@ -197,57 +199,52 @@ ul { list-style: none; }
   display: grid; place-items: center; font-weight: 800;
 }
 
-.hero-figure { position: relative; }
+/* (hero-figure tak dipakai lagi — slider kini latar hero; kelas dipertahankan utk profil.html) */
 .hero-figure img {
   border-radius: var(--radius-l);
   box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45);
   aspect-ratio: 4 / 3.1; object-fit: cover; width: 100%;
 }
-.hero-float {
-  position: absolute; background: rgba(255, 255, 255, 0.94);
-  color: var(--biru-900); border-radius: var(--radius-m);
-  padding: 13px 18px; box-shadow: var(--shadow-lift);
-  display: flex; align-items: center; gap: 12px; font-weight: 700;
-}
-.hero-float small { display: block; font-weight: 600; color: var(--slate-600); font-size: 0.74rem; }
-.hero-float .ikon {
-  width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
-  font-size: 1.15rem; flex: none;
-}
-.float-1 { top: -20px; left: -22px; animation: float 6s ease-in-out infinite; }
-.float-2 { bottom: 46px; right: -14px; animation: float 7s ease-in-out 1s infinite; }
-.float-1 .ikon { background: rgba(37, 99, 235, 0.14); }
-.float-2 .ikon { background: rgba(245, 158, 11, 0.2); }
+/* (kartu melayang dihapus — slider kini menjadi latar belakang hero) */
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
 
 .hero-wave { position: absolute; bottom: -1px; left: 0; width: 100%; line-height: 0; }
 .hero-wave svg { width: 100%; height: 70px; display: block; }
 
 /* =========================================================
-   SLIDER HERO — 5 gambar, panah + titik di tengah bawah
+   SLIDER HERO — latar belakang penuh + overlay gelap
    ========================================================= */
-.hero-slider { position: relative; }
+.hero-slider {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+}
 .hero-slider .slide {
-  display: none;
-  animation: slideMasuk .7s ease;
+  position: absolute; inset: 0; display: none;
+  animation: slideMasuk .8s ease;
 }
 .hero-slider .slide.aktif { display: block; }
 @keyframes slideMasuk {
-  from { opacity: 0; transform: scale(1.035); }
+  from { opacity: 0; transform: scale(1.05); }
   to   { opacity: 1; transform: scale(1); }
 }
 .hero-slider .slide img {
-  border-radius: var(--radius-l);
-  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45);
-  aspect-ratio: 4 / 3.1; object-fit: cover; width: 100%;
+  width: 100%; height: 100%; object-fit: cover;
 }
+/* lapisan gelap agar teks putih terbaca di atas foto */
+.hero-overlay {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(11, 42, 91, 0.82) 0%,
+    rgba(11, 42, 91, 0.74) 45%,
+    rgba(11, 42, 91, 0.86) 100%);
+}
+.hero .container { position: relative; z-index: 3; }
 .slide-kendali {
-  position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%);
+  position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
   display: flex; align-items: center; gap: 14px;
   background: rgba(11, 42, 91, 0.55); backdrop-filter: blur(8px);
   padding: 8px 16px; border-radius: 999px;
   box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.45);
-  z-index: 6;               /* di atas kartu melayang agar panah bisa diklik */
+  z-index: 4;
 }
 .slide-panah {
   width: 34px; height: 34px; border-radius: 50%; border: 0; cursor: pointer;
@@ -625,7 +622,6 @@ body { font-size: var(--ukuran-teks); }
 /* ---------- LAPTOP KECIL / TABLET LANDSCAPE (≤992px) ---------- */
 @media (max-width: 992px) {
   .hero .container, .kepala-grid, .profil-grid, .kontak-grid { grid-template-columns: 1fr; }
-  .hero-figure { order: -1; max-width: 560px; margin-inline: auto; }
   .kepala-foto { max-width: 380px; margin-inline: auto; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .stat + .stat { border-left: 0; }
@@ -670,7 +666,7 @@ body { font-size: var(--ukuran-teks); }
   .form-group input, .form-group textarea, .form-group select { padding: 13px 15px; font-size: 1rem; }
   .btn { padding: 13px 22px; }
 
-  .hero-float { display: none; }            /* kartu melayang sibuk — sembunyikan di layar kecil */
+  /* (hero-float dilepas — latar slider jalan di semua ukuran) */
   .kepala-badge { font-size: 0.78rem; padding: 8px 16px; }
   .admin-grid { grid-template-columns: 1fr; }
   .footer-bottom { justify-content: center; text-align: center; flex-direction: column; gap: 8px; }
