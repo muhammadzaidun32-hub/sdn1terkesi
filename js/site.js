@@ -17,6 +17,12 @@ window.SITE = (function () {
     pengaturan: {
       ppdbOpen: true
     },
+    kepalaSekolah: {
+      nama: "Joko Susilo, S.Pd",
+      sambutan: "",
+      foto: ""
+    },
+    galeri: [],
     guru: [
       { nama: "Joko Susilo, S.Pd", peran: "Kepala Sekolah" },
       { nama: "Nama Guru 2", peran: "Guru Kelas 1" },
@@ -66,8 +72,10 @@ window.SITE = (function () {
         return Object.assign({}, bawaan, d, {
           media: Object.assign({}, bawaan.media, d.media || {}),
           pengaturan: Object.assign({}, bawaan.pengaturan, d.pengaturan || {}),
+          kepalaSekolah: Object.assign({}, bawaan.kepalaSekolah, d.kepalaSekolah || {}),
           guru: d.guru || bawaan.guru,
           ekskul: d.ekskul || bawaan.ekskul,
+          galeri: d.galeri || bawaan.galeri,
           unduhan: d.unduhan || bawaan.unduhan,
           kalender: d.kalender || bawaan.kalender
         });
@@ -76,6 +84,31 @@ window.SITE = (function () {
     return JSON.parse(JSON.stringify(bawaan));
   }
   function set(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
+
+  /* ---------- KOMPRES FOTO ----------
+     File dari HP/kamera sering 3–8 MB; localStorage hanya ±5 MB.
+     Foto dilewatkan ke canvas: di-resize maks 720px lalu disimpan
+     sebagai JPEG kualitas 0.8 — hasilnya biasanya 40–120 KB. */
+  function kompresFoto(file, maksSisi, kualitas) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error("gagal membaca file"));
+      reader.onload = () => {
+        const img = new Image();
+        img.onerror = () => reject(new Error("bukan file gambar"));
+        img.onload = () => {
+          const skala = Math.min(1, maksSisi / Math.max(img.width, img.height));
+          const c = document.createElement("canvas");
+          c.width = Math.round(img.width * skala);
+          c.height = Math.round(img.height * skala);
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          resolve(c.toDataURL("image/jpeg", kualitas || 0.8));
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
 
   /* ---------- WA FLOAT ---------- */
   function renderWA() {
@@ -108,5 +141,5 @@ window.SITE = (function () {
   }
   document.addEventListener("DOMContentLoaded", init);
 
-  return { get, set, renderWA };
+  return { get, set, renderWA, kompresFoto };
 })();

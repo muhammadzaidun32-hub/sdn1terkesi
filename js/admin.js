@@ -23,6 +23,10 @@
       const p = $("pass").value;
       if (u === "admin" && p === "admin123") {
         sessionStorage.setItem("sd_sesi", "1");
+        // langsung tampilkan editor tanpa reload
+        $("loginView").classList.add("tersembunyi");
+        $("adminView").classList.remove("tersembunyi");
+        $("statusBar").classList.add("show");
         muatHalaman();
       } else {
         $("loginError").style.display = "block";
@@ -72,12 +76,20 @@
     $("f_waNomor").value = d.media?.waNomor || "";
     $("f_waPesan").value = d.media?.waPesan || "";
 
+    // kepala sekolah
+    if (d.kepalaSekolah) {
+      $("f_ksnama").value = d.kepalaSekolah.nama || "";
+      $("f_ksSambutan").value = d.kepalaSekolah.sambutan || "";
+      $("prev_ks").src = d.kepalaSekolah.foto || "";
+    }
+
     renderGuru();
     renderProgram();
     renderEkskul();
     renderBerita();
     renderKalender();
     renderUnduhan();
+    renderGaleri();
   }
 
   /* =========================================================
@@ -121,12 +133,30 @@
       const div = document.createElement("div");
       div.className = "item-editor";
       div.innerHTML = `
-        <label class="label-kecil">Nama Guru</label>
-        <input value="${g.nama || ""}" data-g="nama" />
-        <label class="label-kecil" style="margin-top:10px">Peran / Mapel</label>
-        <input value="${g.peran || ""}" data-g="peran" />`;
+        <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
+          <img class="foto-preview bulat" src="${g.foto || "https://ui-avatars.com/api/?name=" + encodeURIComponent(g.nama || "Guru") + "&background=1a4f9c&color=fff&size=240"}" alt="Foto guru" style="width:72px;height:72px" />
+          <div style="flex:1; min-width:200px">
+            <label class="label-kecil">Nama Guru</label>
+            <input value="${g.nama || ""}" data-g="nama" />
+            <label class="label-kecil" style="margin-top:10px">Peran / Mapel</label>
+            <input value="${g.peran || ""}" data-g="peran" />
+          </div>
+        </div>`;
       div.querySelector("[data-g=nama]").addEventListener("input", e => { g.nama = e.target.value; });
       div.querySelector("[data-g=peran]").addEventListener("input", e => { g.peran = e.target.value; });
+      // upload foto per guru
+      const up = document.createElement("input");
+      up.type = "file"; up.accept = "image/*";
+      up.style.cssText = "margin-top:10px; font-size:.85rem";
+      up.className = "upload-foto";
+      up.addEventListener("change", async () => {
+        const file = up.files && up.files[0];
+        if (!file) return;
+        const imgBaru = div.querySelector(".foto-preview");
+        imgBaru.src = await window.SITE.kompresFoto(file, 400, 0.82);
+        g.foto = imgBaru.src;
+      });
+      div.appendChild(up);
       const hapus = document.createElement("button");
       hapus.textContent = "Hapus guru";
       hapus.type = "button";
@@ -175,16 +205,39 @@
       const div = document.createElement("div");
       div.className = "item-editor";
       div.innerHTML = `
-        <label class="label-kecil">Nama Ekskul</label>
-        <input value="${e.nama || ""}" data-e="nama" />
-        <label class="label-kecil" style="margin-top:10px">Jadwal</label>
-        <input value="${e.jadwal || ""}" data-e="jadwal" />
-        <label class="label-kecil" style="margin-top:10px">Pembina</label>
-        <input value="${e.pembina || ""}" data-e="pembina" />`;
+        <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
+          <img class="foto-preview ekskul-foto" src="${e.foto || ""}" alt="Foto kegiatan" style="width:96px;height:72px;${e.foto ? "" : "display:none"}" />
+          <div style="flex:1; min-width:200px">
+            <label class="label-kecil">Nama Ekskul</label>
+            <input value="${e.nama || ""}" data-e="nama" />
+            <label class="label-kecil" style="margin-top:10px">Jadwal</label>
+            <input value="${e.jadwal || ""}" data-e="jadwal" />
+            <label class="label-kecil" style="margin-top:10px">Pembina</label>
+            <input value="${e.pembina || ""}" data-e="pembina" />
+          </div>
+        </div>`;
       wrap.appendChild(div);
       div.querySelectorAll("input[data-e]").forEach(inp => {
         inp.addEventListener("input", () => { e[inp.dataset.e] = inp.value; });
       });
+      // upload foto kegiatan per ekskul
+      const up = document.createElement("input");
+      up.type = "file"; up.accept = "image/*";
+      up.style.cssText = "margin-top:10px; font-size:.85rem";
+      up.addEventListener("change", async () => {
+        const file = up.files && up.files[0];
+        if (!file) return;
+        const src = await window.SITE.kompresFoto(file, 640, 0.78);
+        const img = div.querySelector(".ekskul-foto");
+        img.src = src; img.style.display = "block";
+        e.foto = src;
+        up.dataset.berubah = "1";
+        const ket = document.createElement("small");
+        ket.textContent = "✔ foto siap — klik Simpan Perubahan";
+        ket.style.color = "#166534";
+        if (!div.querySelector(".ket-foto")) div.appendChild(ket);
+      });
+      div.appendChild(up);
     });
   }
   $("btnTambahEkskul").addEventListener("click", () => {
@@ -274,6 +327,49 @@
   });
 
   /* =========================================================
+     GALERI KEGIATAN — upload banyak foto sekaligus
+     ========================================================= */
+  function renderGaleri() {
+    const wrap = $("galeriEditors");
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    d.galeri = d.galeri || [];
+    if (!d.galeri.length) {
+      wrap.innerHTML = '<p style="color:var(--slate-600); font-size:.9rem">Belum ada foto. Klik tombol di bawah untuk menambah.</p>';
+      return;
+    }
+    d.galeri.forEach((g, i) => {
+      const div = document.createElement("div");
+      div.className = "item-editor";
+      div.style.cssText = "display:inline-block; margin:0 10px 10px 0; text-align:center; position:relative";
+      div.innerHTML = `
+        <img src="${g.src}" alt="Foto ${i + 1}" style="width:120px;height:90px;object-fit:cover;border-radius:10px;border:1px solid var(--border)" />
+        <br />
+        <input value="${g.ket || ""}" placeholder="keterangan foto" data-gl="ket" style="width:120px; font-size:.75rem; margin-top:6px; padding:5px 8px; border:1px solid var(--border); border-radius:7px" />
+        <br />
+        <button type="button" class="tombol-kecil" style="background:#fee2e2;color:#b91c1c;margin-top:4px">Hapus</button>`;
+      div.querySelector("[data-gl=ket]").addEventListener("input", e => { g.ket = e.target.value; });
+      div.querySelector("button").addEventListener("click", () => { d.galeri.splice(i, 1); renderGaleri(); });
+      wrap.appendChild(div);
+    });
+  }
+  const upGaleri = $("upGaleri");
+  if (upGaleri) {
+    upGaleri.addEventListener("change", async () => {
+      const files = Array.from(upGaleri.files || []);
+      for (const f of files) {
+        try {
+          const src = await window.SITE.kompresFoto(f, 760, 0.75);
+          d.galeri = d.galeri || [];
+          d.galeri.push({ src, ket: "" });
+        } catch (e) { alert("Gagal memproses " + f.name); }
+      }
+      renderGaleri();
+      upGaleri.value = "";
+    });
+  }
+
+  /* =========================================================
      SIMPAN / RESET
      ========================================================= */
   $("btnSimpan").addEventListener("click", () => {
@@ -289,10 +385,20 @@
     d.hero.deskripsi = $("f_herodesc").value;
     d.media.waNomor = $("f_waNomor").value;
     d.media.waPesan = $("f_waPesan").value;
+    if (d.kepalaSekolah) {
+      d.kepalaSekolah.nama = $("f_ksnama").value;
+      d.kepalaSekolah.sambutan = $("f_ksSambutan").value;
+      const pks = $("prev_ks").src;
+      if (pks && !pks.startsWith("data:image/svg")) d.kepalaSekolah.foto = pks;
+    }
     localStorage.setItem("sd_data", JSON.stringify(d));
+    tampilkanPesanOK();
+  });
+
+  function tampilkanPesanOK() {
     $("simpanOK").style.display = "block";
     setTimeout(() => ($("simpanOK").style.display = "none"), 4000);
-  });
+  }
 
   $("btnReset").addEventListener("click", () => {
     if (confirm("Kembalikan semua konten ke bawaan?")) {

@@ -114,10 +114,20 @@
     (d.guru || []).forEach(g => {
       const kartu = el("article", "guru-card reveal");
       kartu.innerHTML = `
-        <img class="guru-foto" src="${g.foto || avatar(g.nama)}" alt="Foto ${g.nama}" loading="lazy">
+        <img class="guru-foto" src="${g.foto || avatar(g.nama)}" alt="Foto ${g.nama}" loading="lazy" style="width:84px;height:84px;object-fit:cover;border-radius:50%;margin:0 auto 14px">
         <b>${g.nama}</b>
         <small>${g.peran || "Guru"}</small>`;
       guruGrid.appendChild(kartu);
+    });
+    // foto kepala sekolah (jika diunggah di admin) → kartu pertama tetap prioritas
+  }
+
+  /* =========================================================
+     1b) FOTO KEPALA SEKOLAH (beranda .kepala-foto img)
+     ========================================================= */
+  if (d.kepalaSekolah && d.kepalaSekolah.foto) {
+    document.querySelectorAll(".kepala-foto img").forEach(img => {
+      img.src = d.kepalaSekolah.foto;
     });
   }
 
@@ -159,6 +169,28 @@
         fotoGrid.appendChild(item);
       });
     }
+  }
+
+  /* =========================================================
+     3b) GALERI FOTO (galeri.html #galeriGrid) — foto dari admin,
+         jika belum ada → tampilkan foto contoh
+     ========================================================= */
+  const galeriGrid = document.getElementById("galeriGrid");
+  if (galeriGrid) {
+    const isi = (d.galeri && d.galeri.length) ? d.galeri : [
+      { src: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700&q=80", ket: "Belajar di kelas" },
+      { src: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=700&q=80", ket: "Teman sebangku" },
+      { src: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=700&q=80", ket: "Membaca buku" },
+      { src: "https://images.unsplash.com/photo-1509062529494-77520a734299?w=700&q=80", ket: "Belajar kelompok" },
+      { src: "https://images.unsplash.com/photo-1580582931807-58c0cbaacfd6?w=700&q=80", ket: "Bermain di halaman" },
+      { src: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=700&q=80", ket: "Berangkat sekolah" }
+    ];
+    isi.forEach((g, i) => {
+      const item = el("div", "galeri-item" + (i % 5 === 0 ? " tall" : ""));
+      item.setAttribute("data-caption", g.ket || "");
+      item.innerHTML = `<img src="${g.src}" alt="${g.ket || "Kegiatan sekolah"}" loading="lazy">`;
+      galeriGrid.appendChild(item);
+    });
   }
 
   /* =========================================================
