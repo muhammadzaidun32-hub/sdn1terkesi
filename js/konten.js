@@ -5,12 +5,12 @@
 window.KONTEN_DEFAULT = {
   identitas: {
     namaSekolah: "SDN 1 TERKESI",
-    tagline: "Kec. Kramat · Kab. Tegal",
+    tagline: "Kec. Klambu · Kab. Grobogan",
     telepon: "(0283) 000-000",
     email: "sdn1terkesi@gmail.com",
-    alamat: "Jl. Raya Terkesi, Desa Terkesi, Kec. Kramat, Kab. Tegal, Jawa Tengah 52181",
+    alamat: "Terkesi Selatan, Desa Terkesi, Kec. Klambu, Kab. Grobogan, Jawa Tengah 58154",
     jamLayanan: "Senin–Jumat 07.00–13.30 WIB",
-    npsn: "28615703"
+    npsn: "20314632"
   },
   hero: {
     judul1: "Wujudkan Masa Depan",
