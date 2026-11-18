@@ -74,38 +74,70 @@ if (lightbox) {
   });
 }
 
-// Slider hero: panah + titik + autoslide
+// Slider hero geser: selalu maju ke kiri (loop mulus, tidak pernah mundur)
 (function () {
-  const slider = document.querySelector('.hero-slider');
-  if (!slider) return;
-  const slides = slider.querySelectorAll('.slide');
-  const titiks = slider.querySelectorAll('.titik');
+  const track = document.getElementById('slideTrack');
+  const realSlides = track ? track.querySelectorAll('.slide') : [];
+  const titiks = document.querySelectorAll('.slide-kendali .titik');
+  if (!track || !realSlides.length || !titiks.length) return;
+
+  const JUMLAH = realSlides.length;           // 5 slide asli
+  // klon slide pertama ditempel di akhir → loop terasa terus ke kiri
+  const klon = realSlides[0].cloneNode(true);
+  klon.setAttribute('aria-hidden', 'true');
+  track.appendChild(klon);
+
   let indeks = 0;
   let timer = null;
 
-  function tampil(i) {
-    indeks = (i + slides.length) % slides.length;
-    slides.forEach((s, k) => s.classList.toggle('aktif', k === indeks));
-    titiks.forEach((t, k) => t.classList.toggle('aktif', k === indeks));
+  function geser(persen, animasi) {
+    track.style.transition = animasi ? '' : 'none';
+    track.style.transform = 'translateX(-' + persen + '%)';
+    if (!animasi) { void track.offsetWidth; track.style.transition = ''; }
   }
+
+  function tampil(i) {
+    let pos = i;
+    indeks = ((i % JUMLAH) + JUMLAH) % JUMLAH;
+    titiks.forEach((t, k) => t.classList.toggle('aktif', k === indeks));
+
+    if (pos >= JUMLAH) {
+      // maju ke klon (slide kiri lanjut), lalu diam-diam kembali ke awal
+      geser(pos * 100, true);
+      setTimeout(() => geser(0, false), 850);
+    } else {
+      geser(pos * 100, true);
+    }
+  }
+
+  function maju() { tampil(indeks + 1); }
 
   function mulaiOtomatis() {
     clearInterval(timer);
-    timer = setInterval(() => tampil(indeks + 1), 5000);
+    timer = setInterval(maju, 5000);
   }
 
-  // panah
-  const prev = slider.querySelector('#slidePrev');
-  const next = slider.querySelector('#slideNext');
-  if (prev) prev.addEventListener('click', () => { tampil(indeks - 1); mulaiOtomatis(); });
-  if (next) next.addEventListener('click', () => { tampil(indeks + 1); mulaiOtomatis(); });
+  const prev = document.getElementById('slidePrev');
+  const next = document.getElementById('slideNext');
 
-  // klik titik
+  if (next) next.addEventListener('click', () => { maju(); mulaiOtomatis(); });
+  if (prev) prev.addEventListener('click', () => {
+    if (indeks === 0) {
+      // lompat diam-diam ke klon (posisi akhir), lalu maju normal
+      geser(JUMLAH * 100, false);
+      indeks = JUMLAH - 1;
+      titiks.forEach((t, k) => t.classList.toggle('aktif', k === indeks));
+      geser(indeks * 100, true);
+    } else {
+      tampil(indeks - 1);
+    }
+    mulaiOtomatis();
+  });
+
   titiks.forEach(t => t.addEventListener('click', () => { tampil(+t.dataset.i); mulaiOtomatis(); }));
 
-  // jeda saat kursor di atas gambar (desktop)
-  slider.addEventListener('mouseenter', () => clearInterval(timer));
-  slider.addEventListener('mouseleave', mulaiOtomatis);
+  document.querySelector('.hero').addEventListener('mouseenter', () => clearInterval(timer));
+  document.querySelector('.hero').addEventListener('mouseleave', mulaiOtomatis);
 
   mulaiOtomatis();
 })();

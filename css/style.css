@@ -216,15 +216,16 @@ ul { list-style: none; }
    ========================================================= */
 .hero-slider {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  overflow: hidden;
+}
+/* trek horizontal: semua slide berjajar, digeser lewat transform */
+.hero-slider .slide-track {
+  display: flex; height: 100%;
+  transition: transform .8s cubic-bezier(.77, 0, .18, 1);  /* geser halus ke kiri */
+  will-change: transform;
 }
 .hero-slider .slide {
-  position: absolute; inset: 0; display: none;
-  animation: slideMasuk .8s ease;
-}
-.hero-slider .slide.aktif { display: block; }
-@keyframes slideMasuk {
-  from { opacity: 0; transform: scale(1.05); }
-  to   { opacity: 1; transform: scale(1); }
+  flex: 0 0 100%; height: 100%;
 }
 .hero-slider .slide img {
   width: 100%; height: 100%; object-fit: cover;
