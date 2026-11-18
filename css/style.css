@@ -30,6 +30,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
+html, body { overflow-x: clip; }
 
 body {
   font-family: var(--font-utama);
@@ -558,35 +559,132 @@ ul { list-style: none; }
 .reveal.visible { opacity: 1; transform: none; }
 
 /* =========================================================
-   RESPONSIF
+   RESPONSIF — tampilan sempurna di semua perangkat
+   HP kecil (<380) · HP (600) · Tablet (768) · Laptop (992) · Desktop (1400+)
    ========================================================= */
+
+/* ---------- dasar fluid: teks & ruang mengikuti layar ---------- */
+:root {
+  --ukuran-teks: clamp(0.98rem, 0.92rem + 0.35vw, 1.08rem);
+}
+body { font-size: var(--ukuran-teks); }
+
+/* layar sangat besar: batasi lebar agar tidak melebar berlebihan */
+@media (min-width: 1400px) {
+  .container { width: min(1240px, 88%); }
+  .hero { padding: 110px 0 140px; }
+  .section { padding: 100px 0; }
+  .galeri-grid { grid-auto-rows: 220px; }
+}
+
+/* ---------- LAPTOP KECIL / TABLET LANDSCAPE (≤992px) ---------- */
 @media (max-width: 992px) {
   .hero .container, .kepala-grid, .profil-grid, .kontak-grid { grid-template-columns: 1fr; }
-  .hero-figure { order: -1; }
+  .hero-figure { order: -1; max-width: 560px; margin-inline: auto; }
+  .kepala-foto { max-width: 380px; margin-inline: auto; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .stat + .stat { border-left: 0; }
+  .stat:nth-child(2n) { border-left: 0; }
   .card-grid { grid-template-columns: repeat(2, 1fr); }
   .galeri-grid { grid-template-columns: repeat(2, 1fr); }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 26px; }
+  .hero { padding: 68px 0 110px; }
+  .hero .container { gap: 34px; }
+
+  /* menu mobile slide dari kanan */
   .nav-links {
     position: fixed; inset: 0 0 0 auto; width: min(300px, 78vw);
     background: #fff; flex-direction: column; align-items: stretch;
     padding: 90px 24px 24px; gap: 6px; z-index: 55;
     box-shadow: -20px 0 50px rgba(11,42,91,.18);
-    transform: translateX(100%); transition: transform .3s ease;
+    transform: translateX(100%); transition: transform .3s ease, visibility .3s;
+    overflow-y: auto; visibility: hidden;
   }
-  .nav-links.open { transform: translateX(0); }
-  .nav-links a { padding: 13px 18px; font-size: 1rem; }
+  .nav-links.open { transform: translateX(0); visibility: visible; }
+  .nav-links a { padding: 14px 18px; font-size: 1rem; }
   .nav-toggle { display: block; position: relative; z-index: 56; }
   .nav-cta .btn { display: none; }
+
+  .ppdb-strip { flex-direction: column; text-align: center; }
+  .ppdb-strip::after { font-size: 7rem; }
 }
+
+/* ---------- TABLET PORTRAIT & HP LANDSCAPE (≤768px) ---------- */
+@media (max-width: 768px) {
+  .topbar { font-size: 0.76rem; }
+  .topbar .container { justify-content: center; }
+  .section { padding: 64px 0; }
+  .section-head { margin-bottom: 32px; }
+  .card-grid { gap: 16px; }
+
+  /* tabel bisa digeser horizontal, tidak merusak layout */
+  .tabel-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tabel-data { min-width: 560px; }
+
+  /* form nyaman disentuh */
+  .form-group input, .form-group textarea, .form-group select { padding: 13px 15px; font-size: 1rem; }
+  .btn { padding: 13px 22px; }
+
+  .hero-float { display: none; }            /* kartu melayang sibuk — sembunyikan di layar kecil */
+  .kepala-badge { font-size: 0.78rem; padding: 8px 16px; }
+  .admin-grid { grid-template-columns: 1fr; }
+  .footer-bottom { justify-content: center; text-align: center; flex-direction: column; gap: 8px; }
+  .footer-bottom .credit-badge { margin-left: 0 !important; }
+}
+
+/* ---------- HP (≤600px) ---------- */
 @media (max-width: 600px) {
-  .section { padding: 60px 0; }
+  .container { width: 92%; }
+  .section { padding: 52px 0; }
   .card-grid { grid-template-columns: 1fr; }
-  .galeri-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 150px; }
-  .stats-grid { padding: 22px 16px; }
-  .ppdb-strip { padding: 38px 26px; }
+  .galeri-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 150px; gap: 10px; }
+  .stats-grid { padding: 20px 14px; gap: 12px; }
+  .stat .num { font-size: 1.55rem; }
+  .ppdb-strip { padding: 34px 24px; }
+  .ppdb-strip::after { display: none; }
+  .hero { padding: 54px 0 96px; }
+  .hero-title { font-size: clamp(1.75rem, 7.5vw, 2.3rem); }
+  .hero-desc { font-size: 0.98rem; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+  .hero-points { gap: 8px 16px; }
   .footer-grid { grid-template-columns: 1fr; }
   .credit-badge { font-size: 0.72rem; padding: 9px 13px; }
-  .back-top { bottom: 66px; }
+  .back-top { bottom: 66px; width: 42px; height: 42px; }
+  .wa-float { bottom: 62px; right: 14px; padding: 10px 15px; font-size: .84rem; }
+  .vm-card, .program-card { padding: 24px 20px; }
+  .kontak-kartu { padding: 24px 20px; }
+  .page-hero { padding: 48px 0 44px; }
+}
+
+/* ---------- HP KECIL (≤380px: iPhone SE, dll) ---------- */
+@media (max-width: 380px) {
+  .brand-name { font-size: 0.9rem; }
+  .brand-logo { width: 42px; height: 42px; }
+  .hero-title { font-size: clamp(1.5rem, 8vw, 1.9rem); }
+  .galeri-grid { grid-template-columns: 1fr; grid-auto-rows: 200px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .berita-tanggal { padding: 5px 9px; }
+  .topbar { font-size: 0.7rem; }
+}
+
+/* ---------- SENTUH: tombol & link mudah diklik jari ---------- */
+@media (hover: none) and (pointer: coarse) {
+  .nav-links a, .btn, .footer-sosmed a, .tab-kelas { min-height: 44px; }
+  .galeri-item::after { font-size: 0.95rem; padding-bottom: 18px; }
+}
+
+/* ---------- hormati preferensi pengguna: kurangi gerakan ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- CETAK: rapi saat orang mencetak halaman ---------- */
+@media print {
+  .navbar, .topbar, .footer, .credit-badge, .wa-float, .back-top, .hero-wave,
+  .hero-actions, .nav-toggle, .lightbox { display: none !important; }
+  body { background: #fff; }
+  .hero { color: #000; background: #fff; padding: 20px 0; }
+  .hero-desc { color: #333; }
 }
