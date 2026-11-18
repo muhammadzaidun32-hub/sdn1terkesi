@@ -144,6 +144,8 @@ window.SITE = (function () {
 
   /* ---------- WA FLOAT ---------- */
   function renderWA() {
+    // jangan tampilkan di halaman admin
+    if (location.pathname.toLowerCase().includes("admin")) return;
     const old = document.getElementById("waFloat");
     if (old) old.remove();
     const d = get();

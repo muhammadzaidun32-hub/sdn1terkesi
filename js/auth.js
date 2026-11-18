@@ -50,5 +50,5 @@ window.AUTH = (function () {
     return { ok: true };
   }
 
-  return { login, gantiPassword };
+  return { login, gantiPassword, sha256 };
 })();

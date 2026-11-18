@@ -13,15 +13,32 @@
   const statusBar = $("statusBar");
 
   /* =========================================================
-     LOGIN
+     LOGIN — password saja
      ========================================================= */
+  const PASS_KEY = "sd_pass_aktif";
+
+  // hash SHA-256 mandiri (tidak tergantung auth.js agar bebas masalah cache)
+  async function sha256(text) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  // pastikan hash password tersedia (dibuat saat pertama kali)
+  async function pastikanPasswordSiap() {
+    if (!localStorage.getItem(PASS_KEY)) {
+      localStorage.setItem(PASS_KEY, await sha256("admin123"));
+    }
+  }
+  pastikanPasswordSiap();
+
   const formLogin = $("loginForm");
   if (formLogin) {
-    formLogin.addEventListener("submit", (e) => {
+    formLogin.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const u = $("username").value.trim();
       const p = $("pass").value;
-      if (u === "admin" && p === "admin123") {
+      const h = await sha256(p);
+      const tersimpan = localStorage.getItem(PASS_KEY);
+      if (h === tersimpan) {
         sessionStorage.setItem("sd_sesi", "1");
         $("loginView").classList.add("tersembunyi");
         $("adminView").classList.remove("tersembunyi");
