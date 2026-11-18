@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Admin — SDN 1 Terkesi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>" />
+  <style>
+    .admin-wrap { max-width:1100px; margin:40px auto 80px; padding:0 20px; }
+    .admin-card {
+      background:#fff; border:1px solid var(--border); border-radius:18px;
+      padding:28px; margin-bottom:22px; box-shadow:var(--shadow-soft);
+    }
+    .admin-card h2 { margin-bottom:6px; color:var(--biru-900); font-size:1.25rem; font-weight:800; }
+    .admin-card .hint { color:var(--slate-600); font-size:.9rem; margin-bottom:18px; }
+    .label-kecil { display:block; font-weight:700; font-size:.85rem; color:var(--biru-900); margin-bottom:6px; }
+    .admin-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .admin-grid .full { grid-column:1/-1; }
+    .foto-baris { display:flex; gap:16px; align-items:center; margin-top:6px; flex-wrap:wrap; }
+    .foto-preview {
+      width:120px; height:120px; border-radius:14px; object-fit:cover;
+      border:2px solid var(--border); background:#f1f5f9;
+    }
+    .foto-preview.bulat { border-radius:50%; }
+    .btn-merah { background:#fee2e2; color:#b91c1c; }
+    .btn-merah:hover { background:#fecaca; }
+    .btn-hijau { background:#dcfce7; color:#166534; }
+    .login-box {
+      max-width:420px; margin:60px auto; background:#fff; border-radius:22px;
+      padding:40px 34px; box-shadow:var(--shadow-lift); text-align:center;
+    }
+    .login-box .brand-logo { margin:0 auto 14px; }
+    .login-box h1 { font-size:1.4rem; color:var(--biru-900); margin-bottom:6px; }
+    .login-box p  { color:var(--slate-600); font-size:.92rem; margin-bottom:22px; }
+    .status-bar {
+      position:sticky; top:0; z-index:50; background:var(--biru-900); color:#fff;
+      padding:12px 20px; display:none; align-items:center; justify-content:space-between;
+      gap:12px; flex-wrap:wrap; font-size:.9rem;
+    }
+    .status-bar.show { display:flex; }
+    .status-bar b { color:var(--emas-400); }
+    .tersembunyi { display:none !important; }
+    .toggle-baris { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 0; border-bottom:1px dashed var(--border); }
+    .switch { position:relative; width:52px; height:28px; flex:none; }
+    .switch input { opacity:0; width:0; height:0; }
+    .slider {
+      position:absolute; cursor:pointer; inset:0; background:#cbd5e1; border-radius:999px;
+      transition:.25s;
+    }
+    .slider::before {
+      content:""; position:absolute; height:20px; width:20px; left:4px; top:4px;
+      background:#fff; border-radius:50%; transition:.25s;
+    }
+    input:checked + .slider { background:#10b981; }
+    input:checked + .slider::before { transform:translateX(24px); }
+    .item-editor {
+      border:1px dashed var(--border); border-radius:14px; padding:16px; margin-bottom:12px;
+    }
+    .item-editor .hapus {
+      background:#fee2e2; color:#b91c1c; border:0; border-radius:8px; padding:6px 12px;
+      font-weight:700; cursor:pointer; font-size:.8rem;
+    }
+    .tombol-kecil { background:#eff6ff; color:#1d4ed8; border:0; border-radius:8px; padding:8px 14px; font-weight:700; cursor:pointer; font-size:.85rem; }
+    @media (max-width:700px) { .admin-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <section id="loginView">
+    <div class="login-box">
+      <span class="brand-logo" style="display:grid; place-items:center; font-size:1.9rem;">🔐</span>      <h1>Panel Admin Sekolah</h1>
+      <p>Masuk untuk mengelola konten website SDN 1 Terkesi</p>
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="label-kecil">Username</label>
+          <input type="text" id="username" placeholder="admin" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label class="label-kecil">Password</label>
+          <input type="password" id="pass" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button class="btn btn-solid" style="width:100%" type="submit">Masuk</button>
+        <p id="loginError" style="color:#b91c1c; font-size:.88rem; margin-top:12px; display:none;">Username atau password salah!</p>
+        <p style="color:#94a3b8; font-size:.8rem; margin-top:18px;">
+          Default: <code>admin</code> / <code>admin123</code> — WAJIB ganti setelah login pertama!
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar" id="statusBar">
+    <span>✅ Login: <b id="userLabel">admin</b> — data tersimpan otomatis di browser ini</span>
+    <span style="display:flex; gap:10px; flex-wrap:wrap">
+      <a class="btn btn-gold" href="index.html" target="_blank">Lihat Website</a>
+      <button class="btn btn-merah" id="btnLogout" type="button">Keluar</button>
+    </span>
+  </div>
+
+  <!-- EDITOR -->
+  <section id="adminView" class="tersembunyi">
+    <div class="admin-wrap">
+      <h1 style="font-size:1.7rem; font-weight:800; color:var(--biru-900)">Kelola Website SDN 1 Terkesi</h1>
+      <p style="color:var(--slate-600); margin-bottom:24px; font-size:.95rem;">
+        Semua perubahan tersimpan otomatis dan langsung tampil di website.
+      </p>
+
+      <!-- PENGATURAN CEPAT -->
+      <div class="admin-card">
+        <h2>⚡ Pengaturan Cepat</h2>
+        <p class="hint">Saklar ON/OFF — efeknya langsung terlihat di seluruh website.</p>
+
+        <div class="toggle-baris">
+          <div>
+            <b>Pendaftaran Siswa Baru (PPDB)</b><br />
+            <small style="color:var(--slate-600)">ON = formulir pendaftaran terbuka di halaman PPDB; OFF = ditutup dengan pesan.</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="tgPPDB" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-baris" style="border-bottom:0">
+          <div>
+            <b>Tombol WhatsApp Melayang</b><br />
+            <small style="color:var(--slate-600)">Tampilkan/sembunyikan tombol chat WhatsApp di kanan bawah semua halaman.</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="tgWA" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- WHATSAPP -->
+      <div class="admin-card">
+        <h2>💬 WhatsApp</h2>
+        <p class="hint">Nomor ditulis mulai 62 (format internasional, tanpa +). Contoh: 6281234567890</p>
+        <div class="admin-grid">
+          <div><label class="label-kecil">Nomor WhatsApp</label>
+            <input id="f_waNomor" type="text" placeholder="6281234567890" /></div>
+          <div><label class="label-kecil">Pesan Otomatis</label>
+            <input id="f_waPesan" type="text" /></div>
+        </div>
+      </div>
+
+      <!-- IDENTITAS -->
+      <div class="admin-card">
+        <h2>🏫 Identitas Sekolah</h2>
+        <div class="admin-grid">
+          <div class="full"><label class="label-kecil">Nama Sekolah</label>
+            <input id="f_namaSekolah" type="text" /></div>
+          <div><label class="label-kecil">Tagline / Lokasi</label>
+            <input id="f_tagline" type="text" /></div>
+          <div><label class="label-kecil">NPSN</label>
+            <input id="f_npsn" type="text" /></div>
+          <div><label class="label-kecil">Telepon</label>
+            <input id="f_telepon" type="text" /></div>
+          <div><label class="label-kecil">Email</label>
+            <input id="f_email" type="text" /></div>
+          <div class="full"><label class="label-kecil">Alamat Lengkap</label>
+            <textarea id="f_alamat" rows="2"></textarea></div>
+        </div>
+      </div>
+
+      <!-- HERO -->
+      <div class="admin-card">
+        <h2>🖼️ Hero Beranda</h2>
+        <div class="admin-grid">
+          <div><label class="label-kecil">Judul kalimat 1</label>
+            <input id="f_hero1" type="text" /></div>
+          <div><label class="label-kecil">Kata kunci (emas)</label>
+            <input id="f_hero2" type="text" /></div>
+          <div class="full"><label class="label-kecil">Judul kalimat 3</label>
+            <input id="f_hero3" type="text" /></div>
+          <div class="full"><label class="label-kecil">Deskripsi</label>
+            <textarea id="f_herodesc" rows="3"></textarea></div>
+          <div class="full foto-baris">
+            <img id="prev_hero" class="foto-preview" alt="Pratinjau foto hero" />
+            <div>
+              <b style="font-size:.88rem">Foto Hero</b><br />
+              <input type="file" accept="image/*" data-target="hero" class="upload-foto" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEPALA SEKOLAH -->
+      <div class="admin-card">
+        <h2>👤 Kepala Sekolah</h2>
+        <div class="foto-baris">
+          <img id="prev_ks" class="foto-preview bulat" alt="Pratinjau foto kepala sekolah" />
+          <div>
+            <b style="font-size:.88rem">Foto Kepala Sekolah</b><br />
+            <input type="file" accept="image/*" data-target="kepalaSekolah" class="upload-foto" />
+          </div>
+        </div>
+        <div class="admin-grid" style="margin-top:16px">
+          <div class="full"><label class="label-kecil">Nama</label>
+            <input id="f_ksnama" type="text" /></div>
+          <div class="full"><label class="label-kecil">Sambutan</label>
+            <textarea id="f_ksSambutan" rows="5"></textarea></div>
+        </div>
+      </div>
+
+      <!-- GURU -->
+      <div class="admin-card">
+        <h2>👩‍🏫 Daftar Guru</h2>
+        <p class="hint">Klik "+ Tambah Guru" untuk menambah. Foto otomatis dari inisial nama — bisa diganti per guru.</p>
+        <div id="guruEditors"></div>
+        <button class="tombol-kecil" id="btnTambahGuru" type="button">+ Tambah Guru</button>
+      </div>
+
+      <!-- PROGRAM & EKSKUL -->
+      <div class="admin-card">
+        <h2>⚽ Program &amp; Ekstrakurikuler</h2>
+        <p class="hint">Kartu program unggulan dan daftar ekskul (pramuka, BTQ, karawitan, dll).</p>
+        <div id="programEditors"></div>
+        <button class="tombol-kecil" id="btnTambahProgram" type="button">+ Tambah Program</button>
+        <div id="ekskulEditors" style="margin-top:18px"></div>
+        <button class="tombol-kecil" id="btnTambahEkskul" type="button">+ Tambah Ekskul</button>
+      </div>
+
+      <!-- BERITA -->
+      <div class="admin-card">
+        <h2>📰 Berita</h2>
+        <div id="beritaEditors"></div>
+        <button class="tombol-kecil" id="btnTambahBerita" type="button">+ Tambah Berita</button>
+      </div>
+
+      <!-- KALENDER -->
+      <div class="admin-card">
+        <h2>📅 Kalender Sekolah</h2>
+        <div id="kalenderEditors"></div>
+        <button class="tombol-kecil" id="btnTambahKalender" type="button">+ Tambah Kegiatan</button>
+      </div>
+
+      <!-- UNDUHAN -->
+      <div class="admin-card">
+        <h2>⬇️ Unduhan</h2>
+        <p class="hint">Tempel tautan Google Drive file (setelah dibagikan "anyone with the link").</p>
+        <div id="unduhanEditors"></div>
+        <button class="tombol-kecil" id="btnTambahUnduhan" type="button">+ Tambah Dokumen</button>
+      </div>
+
+      <!-- PENDAFTAR -->
+      <div class="admin-card">
+        <h2>📥 Data Pendaftar PPDB</h2>
+        <p class="hint">Hanya tampil di halaman admin ini (butuh password).</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px">
+          <button class="tombol-kecil" id="btnMuatPendaftar" type="button">🔄 Muat Data</button>
+          <button class="tombol-kecil" id="btnEksporCSV" type="button">📊 Ekspor CSV (Excel)</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="tabel-data" id="tabelPendaftar">
+            <thead><tr><th>No. Daftar</th><th>Nama Anak</th><th>Kelas</th><th>Ortu</th><th>WhatsApp</th><th>Waktu</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- AKUN -->
+      <div class="admin-card">
+        <h2>🔑 Ganti Password Admin</h2>
+        <div class="admin-grid">
+          <div><label class="label-kecil">Password Lama</label>
+            <input type="password" id="f_passLama" /></div>
+          <div><label class="label-kecil">Password Baru (min 6)</label>
+            <input type="password" id="f_passBaru" /></div>
+        </div>
+        <button class="btn btn-solid" id="btnGantiPass" type="button" style="margin-top:14px">Ganti Password</button>
+        <p id="pesanPass" style="margin-top:12px; font-weight:600"></p>
+      </div>
+
+      <!-- AKSI -->
+      <div class="admin-card">
+        <h2>💾 Aksi Data</h2>
+        <div style="display:flex; gap:12px; flex-wrap:wrap">
+          <button id="btnSimpan" class="btn btn-solid" type="button">Simpan Perubahan</button>
+          <button id="btnEkspor" class="btn btn-outline" type="button">Ekspor konten (JSON)</button>
+          <button id="btnReset" class="btn btn-merah" type="button">Kembalikan ke bawaan</button>
+        </div>
+        <p id="simpanOK" style="display:none; margin-top:14px; background:#e7f8ef; color:#146c43; border:1px solid #bbe7cc; padding:12px 16px; border-radius:12px; font-weight:600;">
+          Tersimpan! Buka website untuk melihat hasilnya.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <a class="credit-badge" href="#" title="Desain oleh Kang Zaed">
+    <span class="dot" aria-hidden="true"></span> Design by <b>Kang Zaed</b>
+  </a>
+
+  <script src="js/site.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
