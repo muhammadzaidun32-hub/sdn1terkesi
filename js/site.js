@@ -9,6 +9,34 @@ window.SITE = (function () {
 
   /* ---------- DEFAULT DATA ---------- */
   const bawaan = {
+    identitas: {
+      namaSekolah: "SDN 1 TERKESI",
+      tagline: "Kec. Klambu · Kab. Grobogan",
+      telepon: "(0283) 000-000",
+      email: "sdn1terkesi@gmail.com",
+      alamat: "Terkesi Selatan, Desa Terkesi, Kec. Klambu, Kab. Grobogan, Jawa Tengah 58154",
+      npsn: "20314632"
+    },
+    hero: {
+      judul1: "Wujudkan Masa Depan",
+      judul2: "Cerah",
+      judul3: "Anak Bersama SDN 1 Terkesi",
+      deskripsi: "Lembaga pendidikan dasar yang berkomitmen mencetak generasi cerdas, berkarakter, dan berbudaya — dengan guru berdedikasi serta lingkungan belajar yang aman dan menyenangkan.",
+      foto: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=900&q=80"
+    },
+    berita: [
+      { judul: "Pembagian Rapor Semester 1 Tahun Ajaran 2025/2026", tanggal: "15 Des 25", kategori: "Pengumuman", ringkasan: "Pembagian rapor dilaksanakan serentak dengan konferensi singkat bersama wali kelas di ruang kelas masing-masing." },
+      { judul: "Class Meeting Akhir Semester Seru!", tanggal: "08 Des 25", kategori: "Kegiatan", ringkasan: "Berbagai lomba seru menutup semester: lomba kebersihan, mewarnai, cerdas cermat, hingga panggung kreatif." },
+      { judul: "Tim Futsal Juara Turnamen Kecamatan", tanggal: "28 Nov 25", kategori: "Sekolah", ringkasan: "Tim futsal SDN 1 Terkesi berhasil membawa piala kejuaraan setelah tampil apik mengalahkan sekolah lain." }
+    ],
+    program: [
+      { ikon: "📚", nama: "Pembelajaran Menyenangkan", keterangan: "Kurikulum Merdeka berpusat pada murid: belajar sambil bermain, mencoba, dan menemukan." },
+      { ikon: "🤝", nama: "Penguatan Karakter (P5)", keterangan: "Gotong royong, kemandirian, bernalar kritis, dan berkebinekaan global." },
+      { ikon: "🕌", nama: "Pendidikan Agama & BTQ", keterangan: "Pembinaan iman, praktik ibadah, dan baca tulis Quran untuk generasi berakhlak mulia." },
+      { ikon: "⚽", nama: "Ekstrakurikuler Beragam", keterangan: "Pramuka, futsal, karawitan, tari, hadroh, dan robotika untuk mengembangkan bakat." },
+      { ikon: "💻", nama: "Literasi & Numerasi Digital", keterangan: "Pembiasaan membaca 15 menit serta pengenalan TIK untuk era digital." },
+      { ikon: "🥗", nama: "Gratis & Inklusif", keterangan: "Sekolah negeri tanpa biaya pendaftaran, terbuka untuk semua anak." }
+    ],
     media: {
       waNomor: "6281234567890",     // format 62xxx
       waTampil: true,
@@ -70,6 +98,10 @@ window.SITE = (function () {
         const d = JSON.parse(raw);
         // gabungkan dengan default agar field-nya lengkap
         return Object.assign({}, bawaan, d, {
+          identitas: Object.assign({}, bawaan.identitas, d.identitas || {}),
+          hero: Object.assign({}, bawaan.hero, d.hero || {}),
+          berita: d.berita || bawaan.berita,
+          program: d.program || bawaan.program,
           media: Object.assign({}, bawaan.media, d.media || {}),
           pengaturan: Object.assign({}, bawaan.pengaturan, d.pengaturan || {}),
           kepalaSekolah: Object.assign({}, bawaan.kepalaSekolah, d.kepalaSekolah || {}),

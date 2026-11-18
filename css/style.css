@@ -481,6 +481,10 @@ ul { list-style: none; }
   50% { box-shadow: 0 0 0 8px rgba(251,191,36,.08); }
 }
 
+/* ---------- baris foto via link (admin) ---------- */
+.foto-url-baris { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.foto-url-baris img[alt] { background: #f1f5f9; }
+
 /* ---------- back to top ---------- */
 .back-top {
   position: fixed; right: 16px; bottom: 74px; z-index: 89;

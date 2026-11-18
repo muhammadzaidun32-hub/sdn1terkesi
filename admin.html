@@ -182,12 +182,8 @@
             <input id="f_hero3" type="text" /></div>
           <div class="full"><label class="label-kecil">Deskripsi</label>
             <textarea id="f_herodesc" rows="3"></textarea></div>
-          <div class="full foto-baris">
-            <img id="prev_hero" class="foto-preview" alt="Pratinjau foto hero" />
-            <div>
-              <b style="font-size:.88rem">Foto Hero</b><br />
-              <input type="file" accept="image/*" data-target="hero" class="upload-foto" />
-            </div>
+          <div class="full foto-url-baris" id="fotoHeroUrl">
+            <!-- baris link foto hero dibuat otomatis oleh admin.js -->
           </div>
         </div>
       </div>
@@ -195,12 +191,8 @@
       <!-- KEPALA SEKOLAH -->
       <div class="admin-card">
         <h2>👤 Kepala Sekolah</h2>
-        <div class="foto-baris">
-          <img id="prev_ks" class="foto-preview bulat" alt="Pratinjau foto kepala sekolah" />
-          <div>
-            <b style="font-size:.88rem">Foto Kepala Sekolah</b><br />
-            <input type="file" accept="image/*" data-target="kepalaSekolah" class="upload-foto" />
-          </div>
+        <div class="foto-url-baris" id="fotoKSUrl">
+          <!-- baris link foto kepala sekolah dibuat otomatis oleh admin.js -->
         </div>
         <div class="admin-grid" style="margin-top:16px">
           <div class="full"><label class="label-kecil">Nama</label>
@@ -231,8 +223,17 @@
       <!-- BERITA -->
       <div class="admin-card">
         <h2>📰 Berita</h2>
+        <p class="hint">Tambah bila ada kabar baru — kartu berita tampil di beranda.</p>
         <div id="beritaEditors"></div>
         <button class="tombol-kecil" id="btnTambahBerita" type="button">+ Tambah Berita</button>
+      </div>
+
+      <!-- GALERI -->
+      <div class="admin-card">
+        <h2>🖼️ Galeri Kegiatan</h2>
+        <p class="hint">Tempel link foto (mis. dari Google Drive/Imgur) — satu baris satu foto, beserta keterangannya.</p>
+        <div id="galeriEditors"></div>
+        <button class="tombol-kecil" id="btnTambahGaleri" type="button">+ Tambah Foto (link)</button>
       </div>
 
       <!-- KALENDER -->
@@ -277,14 +278,6 @@
         </div>
         <button class="btn btn-solid" id="btnGantiPass" type="button" style="margin-top:14px">Ganti Password</button>
         <p id="pesanPass" style="margin-top:12px; font-weight:600"></p>
-      </div>
-
-      <!-- GALERI -->
-      <div class="admin-card">
-        <h2>🖼️ Galeri Kegiatan</h2>
-        <p class="hint">Upload foto kegiatan sekolah — bisa pilih banyak foto sekaligus (Ctrl/Shift+klik). Foto otomatis dikompres agar hemat ruang. Keterangan foto opsional.</p>
-        <input type="file" id="upGaleri" accept="image/*" multiple style="margin-bottom:16px; font-size:.9rem" />
-        <div id="galeriEditors"></div>
       </div>
 
       <!-- AKSI -->
