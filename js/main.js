@@ -74,6 +74,42 @@ if (lightbox) {
   });
 }
 
+// Slider hero: panah + titik + autoslide
+(function () {
+  const slider = document.querySelector('.hero-slider');
+  if (!slider) return;
+  const slides = slider.querySelectorAll('.slide');
+  const titiks = slider.querySelectorAll('.titik');
+  let indeks = 0;
+  let timer = null;
+
+  function tampil(i) {
+    indeks = (i + slides.length) % slides.length;
+    slides.forEach((s, k) => s.classList.toggle('aktif', k === indeks));
+    titiks.forEach((t, k) => t.classList.toggle('aktif', k === indeks));
+  }
+
+  function mulaiOtomatis() {
+    clearInterval(timer);
+    timer = setInterval(() => tampil(indeks + 1), 5000);
+  }
+
+  // panah
+  const prev = slider.querySelector('#slidePrev');
+  const next = slider.querySelector('#slideNext');
+  if (prev) prev.addEventListener('click', () => { tampil(indeks - 1); mulaiOtomatis(); });
+  if (next) next.addEventListener('click', () => { tampil(indeks + 1); mulaiOtomatis(); });
+
+  // klik titik
+  titiks.forEach(t => t.addEventListener('click', () => { tampil(+t.dataset.i); mulaiOtomatis(); }));
+
+  // jeda saat kursor di atas gambar (desktop)
+  slider.addEventListener('mouseenter', () => clearInterval(timer));
+  slider.addEventListener('mouseleave', mulaiOtomatis);
+
+  mulaiOtomatis();
+})();
+
 // Form kontak & PPDB: tampilkan pesan sukses (simulasi, tanpa backend)
 document.querySelectorAll('form[data-demo]').forEach(form => {
   form.addEventListener('submit', e => {
